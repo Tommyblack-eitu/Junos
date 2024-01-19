@@ -1,29 +1,10 @@
-name: load configure file into device
-  junos_config:
-    src: srx.cfg
-    comment: update config
+---
+- name: Backup Juniper Device Configuration
+  hosts: Junos-1
+  gather_facts: no
+  become: yes
 
-- name: load configure lines into device
-  junos_config:
-    lines:
-      - set interfaces ge-0/0/1 unit 0 description "Test interface"
-      - set vlans vlan01 description "Test vlan"
-    comment: update config
-
-- name: rollback the configuration to id 10
-  junos_config:
-    rollback: 10
-
-- name: zero out the current configuration
-  junos_config:
-    zeroize: yes
-
-- name: confirm a previous commit
-  junos_config:
-    confirm_commit: yes
-
-- name: for idempotency, use full-form commands
-  junos_config:
-    lines:
-      # - set int ge-0/0/1 unit 0 desc "Test interface"
-      - set interfaces ge-0/0/1 unit 0 description "Test interface"
+  tasks:
+    - name: Save configuration
+      junos_save:
+        destination: "/path/to/backup/{{ inventory_hostname }}_config_backup.conf"
