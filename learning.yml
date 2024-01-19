@@ -6,13 +6,14 @@
 
   tasks:
     - name: Save configuration
-      junos_command:
+      Juniper.junos.junos_command:
         commands:
           - "show configuration | display set"
       register: show_config
 
     - name: Save running configuration to a file
       copy:
-        content: "{{ show_config.stdout[0] }}"
+        content: "{{ show_config.stdout_lines | join('\n') }}"
         dest: "/path/to/backup/{{ inventory_hostname }}_config_backup.conf"
+
 
