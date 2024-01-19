@@ -1,10 +1,10 @@
 ---
 - name: Backup Juniper Device Configuration
-  hosts: Junos-1
+  hosts: junos_devices
   gather_facts: no
   become: yes
 
   tasks:
     - name: Save configuration
-      junos_save:
+      Juniper.junos.junos_save:
         destination: "/path/to/backup/{{ inventory_hostname }}_config_backup.conf"
